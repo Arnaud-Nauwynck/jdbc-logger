@@ -1,0 +1,59 @@
+<!-- 
+file: jdbclogger/src/main/resources/fr/an/tools/jdbclogger/jdbclogger-logback-db-nonrolling.xml
+logback fragment to include in your logback.xml configuration as folloging:
+
+   <include resource="fr/an/tools/jdbclogger/jdbclogger-logback-db-nonrolling.xml" />
+
+ -->
+<included>
+
+  <appender name="dbfile" class="ch.qos.logback.core.FileAppender">
+    <append>false</append>
+    <File>${logdir}/jdbclog.log</File>
+    <encoder>
+      <pattern>%-4d{HH:mm:ss} %X - %m%n</pattern>
+    </encoder>
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <level>info</level>
+    </filter>
+  </appender>
+  
+  <appender name="dbstackfile" class="ch.qos.logback.core.FileAppender">
+    <append>false</append>
+    <File>${logdir}/jdbclog-stacks.log</File>
+    <encoder>
+      <pattern>%-4d{HH:mm:ss} %X - %m%n</pattern>
+    </encoder>
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <level>info</level>
+    </filter>
+  </appender>
+
+
+  <appender name="dbMaxReachedfile" class="ch.qos.logback.core.FileAppender">
+    <append>false</append>
+    <File>${logdir}/jdbclog-maxreached.log</File>
+    <encoder>
+      <pattern>%-4d{HH:mm:ss} %X - %m%n</pattern>
+    </encoder>
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <level>info</level>
+    </filter>
+  </appender>
+  
+
+  <logger name="db" additivity="false" level="info">
+    <appender-ref ref="dbfile"/>
+  </logger>
+  <logger name="dbstack" additivity="false" level="info">
+  </logger>
+  <logger name="dbstack.sqlTemplates" additivity="false" level="info">
+    <appender-ref ref="dbstackfile"/>
+  </logger>
+  <logger name="dbstack.maxreached" additivity="false" level="info">
+    <appender-ref ref="dbMaxReachedfile"/>
+  </logger>
+
+
+
+</included>  

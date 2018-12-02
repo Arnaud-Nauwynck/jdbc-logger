@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false">
+	<jmxConfigurator />
+
+    <property name="logdir" value="target" />
+    <property name="basefilename" value="app" />
+
+    <property name="rootlevel" value="INFO" />
+
+
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%-4relative [%thread] %-5level %class - %msg%n</pattern>
+        </layout>
+    </appender>
+
+	<appender name="file"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
+		<file>${logdir}/${basefilename}.log</file>
+		<append>false</append>
+		<encoder>
+			<pattern>%d %-40c{40} [%t] %-5p %X - %m%n %xEx</pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<maxIndex>2</maxIndex>
+            <FileNamePattern>${logdir}/${basefilename}.log.%i</FileNamePattern>
+		</rollingPolicy>
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>10000KB</MaxFileSize>
+		</triggeringPolicy>
+	</appender>
+
+
+  <appender name="dbfile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <append>true</append>
+    <File>${logdir}/jdbclog.log</File>
+    <encoder>
+      <pattern>%-4d{HH:mm:ss} %X - %m%n</pattern>
+    </encoder>
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <level>info</level>
+    </filter>
+    <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+      <maxIndex>10</maxIndex>
+      <FileNamePattern>${logdir}/jdbclog.log.%i</FileNamePattern>
+    </rollingPolicy>
+    <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+      <MaxFileSize>20000KB</MaxFileSize>
+    </triggeringPolicy>
+  </appender>
+  <appender name="dbstackfile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <append>true</append>
+    <File>${logdir}/jdbclog-stacks.log</File>
+    <encoder>
+      <pattern>%-4d{HH:mm:ss} %X - %m%n</pattern>
+    </encoder>
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <level>info</level>
+    </filter>
+    <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+      <maxIndex>10</maxIndex>
+      <FileNamePattern>${logdir}/jdbclog-stacks.log.%i</FileNamePattern>
+    </rollingPolicy>
+    <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+      <MaxFileSize>20000KB</MaxFileSize>
+    </triggeringPolicy>
+  </appender>
+
+
+  <logger name="db" additivity="false" level="info">
+    <appender-ref ref="dbfile"/>
+  </logger>
+  <logger name="dbstack" additivity="false" level="info">
+    <appender-ref ref="dbstackfile"/>
+  </logger>
+
+    <root level="INFO">
+        <appender-ref ref="stdout" />
+        <appender-ref ref="file" />
+    </root>
+</configuration>

@@ -1,0 +1,69 @@
+<!-- 
+file: jdbclogger/src/main/resources/fr/an/tools/jdbclogger/jdbclogger-logback-db-rolling.xml
+logback fragment to include in your logback.xml configuration as folloging:
+
+   <include resource="fr/an/tools/jdbclogger/jdbclogger-logback-db-rolling.xml" />
+
+ -->
+<included>
+
+  <appender name="dbfile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${logdir}/jdbclog.log</file>
+    <encoder>
+      <pattern>%-4d{HH:mm:ss} [%5.5thread] %-30.30c %-5p %X - %m%n</pattern>
+    </encoder>
+    <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+      <maxIndex>2</maxIndex>
+      <FileNamePattern>${logdir}/jdbclogger.log%i.gz</FileNamePattern>
+    </rollingPolicy>
+    <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+      <MaxFileSize>10000KB</MaxFileSize>
+    </triggeringPolicy>
+  </appender>
+  
+  
+  <appender name="dbstackfile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${logdir}/jdbclog-stacks.log</file>
+    <encoder>
+      <pattern>%-4d{HH:mm:ss} [%5.5thread] %-30.30c %-5p %X - %m%n</pattern>
+    </encoder>
+    <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+      <maxIndex>2</maxIndex>
+      <FileNamePattern>${logdir}/jdbclog-stacks.log%i.gz</FileNamePattern>
+    </rollingPolicy>
+    <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+      <MaxFileSize>10000KB</MaxFileSize>
+    </triggeringPolicy>
+  </appender>
+
+  <appender name="dbMaxReachedfile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${logdir}/jdbclog-maxreached.log</file>
+    <encoder>
+      <pattern>%-4d{HH:mm:ss} [%5.5thread] %-30.30c %-5p %X - %m%n</pattern>
+    </encoder>
+    <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+      <maxIndex>2</maxIndex>
+      <FileNamePattern>${logdir}/jdbclog-maxreached.log%i.gz</FileNamePattern>
+    </rollingPolicy>
+    <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+      <MaxFileSize>10000KB</MaxFileSize>
+    </triggeringPolicy>
+  </appender>
+  
+  
+
+  <logger name="db" additivity="false" level="info">
+    <appender-ref ref="dbfile"/>
+  </logger>
+  <logger name="dbstack" additivity="false" level="info">
+  </logger>
+  <logger name="dbstack.sqlTemplates" additivity="false" level="info">
+    <appender-ref ref="dbstackfile"/>
+  </logger>
+  <logger name="dbstack.maxreached" additivity="false" level="info">
+    <appender-ref ref="dbMaxReachedfile"/>
+  </logger>
+
+
+
+</included>  
